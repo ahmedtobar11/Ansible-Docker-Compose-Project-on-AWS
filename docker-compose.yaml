@@ -1,0 +1,27 @@
+version: '3.1'
+services:
+  mysql_database:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: wp_db
+      MYSQL_USER: ahmed_tobar
+      MYSQL_PASSWORD: 1234
+    volumes:
+      - db:/var/lib/mysql
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: mysql_database
+      WORDPRESS_DB_USER: ahmed_tobar
+      WORDPRESS_DB_PASSWORD: 1234
+      WORDPRESS_DB_NAME: wp_db
+    volumes:
+      - wordpress:/var/www/html
+volumes:
+  wordpress:
+  db:

@@ -1,0 +1,61 @@
+---
+- name: Install Docker and Docker-Compose, and run Docker Compose on Amazon Linux
+  hosts: docker_server
+  become: yes
+  tasks:
+    # Install required dependencies
+    - name: Install yum dependencies
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - yum-utils
+        - device-mapper-persistent-data
+        - lvm2
+
+    # Install Docker
+    - name: Install Docker
+      yum:
+        name: docker
+        state: present
+
+    # Ensure Docker service is started and enabled
+    - name: Ensure Docker is started
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Add ec2-user to docker group
+      user:
+        name: ec2-user
+        groups: docker
+        append: true
+
+    - name: Reset connection to apply group changes
+      meta: reset_connection
+
+    # Install Docker Compose
+    - name: Install Docker Compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+
+# Copy docker-compose.yaml file to ec2-user's home directory
+
+- name: Copy and Start Docker Compose
+  hosts: docker_server
+  tasks:
+    - name: Copy docker-compose.yaml to target
+      copy:
+        src: /home/ahmed/ansible_docker_project/docker-compose.yaml
+        dest: /home/ec2-user/docker-compose.yaml
+
+    - name: Run Docker Compose to start services
+      command: docker-compose up -d
+      args:
+        chdir: /home/ec2-user
+
+
+
