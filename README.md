@@ -114,7 +114,8 @@ docker-compose -f docker-compose.yaml up -d
     terraform init
     terraform apply
     ```
-    
+    ![Capture](https://github.com/user-attachments/assets/b8da1905-a864-4f4c-abe3-872f03b7da93)
+
 
 ### Step 2: Deploy Docker & Docker-Compose with Ansible
 
@@ -123,12 +124,15 @@ docker-compose -f docker-compose.yaml up -d
     ```
     ansible-playbook deploy-docker.yaml
     ```
+    ![2](https://github.com/user-attachments/assets/f08b0628-7534-4516-a2fa-b0e37275027b)
 
 ###  Step 3: Running Docker-Compose Services
 
 1.  The Ansible playbook copies the `docker-compose.yaml` file to `/home/ec2-user` on the EC2 instance.
 2.  The playbook starts the Docker Compose stack, running both WordPress and MySQL services.
 3.  You can access the WordPress site at `http://<EC2-instance-public-ip>:8080`.
+4.  ![Captuuuuure](https://github.com/user-attachments/assets/5a55fc9c-1960-4e44-b131-710d5255e0b0)
+
 ----------
 
 ## Conclusion
